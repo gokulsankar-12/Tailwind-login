@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page using Tailwind</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="flex items-center justify-center min-h-screen bg-gray-100 px-4">
+    <!-- Main Container -->
+    <div class="flex bg-white rounded-2xl shadow-xl w-full max-w-6xl text-black overflow-hidden">
+
+        <!-- left side -->
+        <div class="w-full md:w-1/2 p-6 sm:p-8 md:p-10">
+
+            <div class="mb-10 sm:mb-14 md:mb-20">
+                <img class="w-[80px]" src="EXL_Service_logo.png" alt="EXL_Service_logo">
+            </div>
+
+            <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 text-center">Welcome Back</h2>
+            <p class="text-gray-500 mb-6 sm:mb-8 text-sm sm:text-base text-center">Enter your email and password to
+                access your account</p>
+
+            <div class="mb-5">
+                <h3 class="mb-2 font-medium">Email</h3>
+                <input type="email" name="email" id="email" placeholder="Enter your email"
+                    class="w-full border p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <p id="emailError" class="text-red-500 text-sm mt-1 hidden">
+                    Email is required
+                </p>
+
+                <h3 class="mt-5 mb-2">Password</h3>
+                <input type="password" name="password" id="password" placeholder="Enter your password"
+                    class="w-full border p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <p id="passwordError" class="text-red-500 text-sm mt-1 hidden">
+                    Password is required
+                </p>
+
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mt-3">
+                    <div class="flex items-center">
+                        <input type="checkbox" id="remember" class="mr-2">
+                        <label for="remember" class="text-sm text-gray-500">Remember me</label>
+                    </div>
+
+                    <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500">Forget Password?</a>
+                </div>
+                <p id="rememberError" class="text-red-500 text-sm mt-3 hidden">
+                    Please select Remember me to continue
+                </p>
+
+            </div>
+
+            <button onclick="login()"
+                class="w-full bg-blue-600 py-3 rounded-xl font-semibold hover:bg-blue-700 transition text-white mt-4">Log
+                In
+            </button>
+            <div class="flex items-center justify-center gap-1 mt-3">
+                <h3 class="text-gray-500">Don’t have an account?</h3>
+                <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500">
+                    Register Now
+                </a>
+            </div>
+
+        </div>
+        <!-- right side -->
+        <div
+            class="hidden md:flex md:w-1/2 bg-gradient-to-br from-blue-600 to-indigo-700 items-center justify-center p-10 relative">
+
+            <div class="text-white max-w-md">
+                <h2 class="text-3xl font-bold mb-4">
+                    Effortlessly manage your team and operations.
+                </h2>
+                <p class="text-blue-100 mb-6">
+                    Log in to access your dashboard and manage everything in one place.
+                </p>
+
+                <img src="image.jpg" alt="Dashboard" class="rounded-xl shadow-xl block mx-auto">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function login() {
+            const emailInput = document.getElementById("email");
+            const passwordInput = document.getElementById("password");
+            const rememberCheckbox = document.getElementById("remember");
+
+            const emailError = document.getElementById("emailError");
+            const passwordError = document.getElementById("passwordError");
+            const rememberError = document.getElementById("rememberError");
+
+            let isValid = true;
+
+            // Reset errors
+            emailError.classList.add("hidden");
+            passwordError.classList.add("hidden");
+            rememberError.classList.add("hidden");
+
+            emailInput.classList.remove("border-red-500");
+            passwordInput.classList.remove("border-red-500");
+
+            // ✅ Email validation (exact email)
+            if (emailInput.value.trim() !== "gokulsrutthi2004@gmail.com") {
+                emailError.textContent = "Invalid email address";
+                emailError.classList.remove("hidden");
+                emailInput.classList.add("border-red-500");
+                isValid = false;
+            }
+
+            // ✅ Password validation (strong password)
+            // ✅ Password validation (detailed)
+            const password = passwordInput.value;
+
+            let passwordMessages = [];
+
+            if (!/[A-Z]/.test(password)) {
+                passwordMessages.push("1 uppercase letter");
+            }
+            if (!/[a-z]/.test(password)) {
+                passwordMessages.push("1 lowercase letter");
+            }
+            if ((password.match(/\d/g) || []).length < 2) {
+                passwordMessages.push("more than 2 numbers");
+            }
+            if (!/[@$!%*?&]/.test(password)) {
+                passwordMessages.push("1 special character");
+            }
+            if (password.length < 8) {
+                passwordMessages.push("minimum 8 characters");
+            }
+
+            if (passwordMessages.length > 0) {
+                passwordError.textContent =
+                    " Password must contain : " + passwordMessages.join(", ");
+                passwordError.classList.remove("hidden");
+                passwordInput.classList.add("border-red-500");
+                isValid = false;
+            }
+
+
+            // Remember Me validation
+            if (!rememberCheckbox.checked) {
+                rememberError.classList.remove("hidden");
+                isValid = false;
+            }
+
+            // 🔹 Hide email error while typing
+            emailInput.addEventListener("input", () => {
+                emailError.classList.add("hidden");
+                emailInput.classList.remove("border-red-500");
+            });
+
+            // 🔹 Hide password error while typing
+            passwordInput.addEventListener("input", () => {
+                passwordError.classList.add("hidden");
+                passwordInput.classList.remove("border-red-500");
+            });
+
+            // 🔹 Hide remember error when checkbox is clicked
+            rememberCheckbox.addEventListener("change", () => {
+                rememberError.classList.add("hidden");
+            });
+
+            if (isValid) {
+                alert("Login Successful");
+
+                // Clear inputs
+                emailInput.value = "";
+                passwordInput.value = "";
+                rememberCheckbox.checked = false;
+            } 
+            // else {
+            //     location.reload();
+            // }
+        }
+    </script>
+</body>
+
+</html>
